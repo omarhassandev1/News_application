@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/enums/category_enum.dart';
-import 'package:news_app/pages/widgets/category_card.dart';
+import 'package:news_app/pages/views/category_details_view.dart';
+import 'package:news_app/pages/views/category_list_view.dart';
+import 'package:news_app/pages/views/home_drawer.dart';
+import 'package:news_app/providers/category_provider.dart';
+import 'package:provider/provider.dart';
 
 class MainLayer extends StatelessWidget {
   const MainLayer({super.key});
@@ -9,28 +12,27 @@ class MainLayer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: Drawer(),
-      appBar: AppBar(title: Text('Home')),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15.0),
-          child: Column(
-            spacing: 16,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('''Good Morning
-Here is Some News For You''', style: Theme.of(context).textTheme.headlineSmall),
-              ...List.generate(
-                CategoryEnum.values.length,
-                (index) => CategoryCard(
-                  categoryEnum: CategoryEnum.values[index],
-                  isRight: index % 2 != 0,
+    return ChangeNotifierProvider(
+      create: (context) => CategoryProvider(),
+      child: Consumer<CategoryProvider>(
+        builder:
+            (context, value, child) => Scaffold(
+              drawer: HomeDrawer(),
+              appBar: AppBar(
+                title: Text(
+                  value.selectedCategory != null
+                      ? value.selectedCategory!.name
+                      : 'Home',
                 ),
+                actions: [
+                  IconButton(onPressed: () {}, icon: Icon(Icons.search)),
+                ],
               ),
-            ],
-          ),
-        ),
+              body:
+                  value.selectedCategory == null
+                      ? CategoryListView()
+                      : CategoryDetailsView(),
+            ),
       ),
     );
   }
