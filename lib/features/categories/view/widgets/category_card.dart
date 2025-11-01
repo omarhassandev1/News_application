@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/common/app_colors.dart';
-import 'package:news_app/enums/category_enum.dart';
-import 'package:news_app/providers/category_provider.dart';
+import 'package:news_app/features/categories/view_model/category_provider.dart';
 import 'package:provider/provider.dart';
+
+import '../../model/enums/category_enum.dart';
 
 class CategoryCard extends StatelessWidget {
   const CategoryCard({

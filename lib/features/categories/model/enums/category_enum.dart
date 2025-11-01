@@ -1,4 +1,5 @@
-import '../gen/assets.gen.dart';
+
+import '../../../../gen/assets.gen.dart';
 
 enum CategoryEnum{
   general(name: 'General',),

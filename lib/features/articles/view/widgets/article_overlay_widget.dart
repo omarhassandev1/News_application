@@ -2,8 +2,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-import '../../common/app_colors.dart';
-import '../../models/news_response.dart';
+import '../../../../common/app_colors.dart';
+import '../../model/news_response.dart';
+
 
 class ArticleOverlayWidget extends StatelessWidget {
   const ArticleOverlayWidget({super.key, required this.article});

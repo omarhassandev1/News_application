@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:news_app/models/news_response.dart';
-import 'package:news_app/models/source_response.dart';
+import 'package:news_app/features/articles/model/news_response.dart';
+import 'package:news_app/features/articles/model/source_response.dart';
 import 'package:news_app/network/network_consts.dart';
 
 class ApiService {

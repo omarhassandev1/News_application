@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/pages/views/category_details_view.dart';
-import 'package:news_app/pages/views/category_list_view.dart';
-import 'package:news_app/pages/views/home_drawer.dart';
-import 'package:news_app/providers/category_provider.dart';
+import 'package:news_app/features/articles/view/category_details_view.dart';
+import 'package:news_app/features/categories/view/category_list_view.dart';
+import 'package:news_app/features/categories/view_model/category_provider.dart';
 import 'package:provider/provider.dart';
+
+import 'categories/view/home_drawer.dart';
 
 class MainLayer extends StatelessWidget {
   const MainLayer({super.key});
