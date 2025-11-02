@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_app/common/app_colors.dart';
-import 'package:news_app/features/categories/view_model/category_provider.dart';
-import 'package:provider/provider.dart';
-
+import 'package:news_app/features/categories/view_model/category_cubit.dart';
 import '../../model/enums/category_enum.dart';
 
 class CategoryCard extends StatelessWidget {
@@ -19,10 +18,7 @@ class CategoryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap:
-          () => Provider.of<CategoryProvider>(
-            context,
-            listen: false,
-          ).selectCategory(categoryEnum),
+          () => context.read<CategoryCubit>().selectCategory(categoryEnum),
       child: Container(
         height: 200,
         width: double.infinity,
