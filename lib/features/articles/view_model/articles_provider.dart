@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:news_app/common/error/failure_model.dart';
 import 'package:news_app/features/articles/model/api_service.dart';
 import 'package:news_app/features/articles/model/news_response.dart';
 import 'package:news_app/features/articles/model/source_response.dart';
@@ -16,7 +17,11 @@ class ArticlesProvider extends ChangeNotifier {
     notifyListeners();
     try {
       sources = await ApiService.getSources(catName);
-    } catch (e) {
+    }
+    on FailureModel catch(e){
+      sourcesError = e.errorMessage;
+    }
+    catch (e) {
       sourcesError = e.toString();
     }
     sourcesLoading = false;
@@ -29,7 +34,11 @@ class ArticlesProvider extends ChangeNotifier {
     notifyListeners();
     try {
       articles = await ApiService.getArticles(sourceId);
-    } catch (e) {
+    }
+    on FailureModel catch(e){
+      articleError = e.errorMessage;
+    }
+    catch (e) {
       articleError = e.toString();
     }
     articlesLoading = false;

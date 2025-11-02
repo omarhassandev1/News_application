@@ -7,6 +7,7 @@ import 'package:news_app/features/articles/model/api_service.dart';
 import 'package:news_app/features/categories/view_model/category_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../../../common/widgets/error_widget.dart';
 import '../../categories/model/enums/category_enum.dart';
 
 class CategoryDetailsView extends StatelessWidget {
@@ -102,39 +103,17 @@ class _ArticlesListState extends State<ArticlesList> {
         NewsResponse newsResponse = viewModel.articles!;
         List<Articles> articles = newsResponse.articles ?? [];
 
-        return ListView.builder(
-          itemBuilder:
-              (context, index) => ArticleCardWidget(article: articles[index]),
-          itemCount: articles.length,
+        return RefreshIndicator(
+          onRefresh: ()async{
+            viewModel.getArticles(widget.sourceId);
+          },
+          child: ListView.builder(
+            itemBuilder:
+                (context, index) => ArticleCardWidget(article: articles[index]),
+            itemCount: articles.length,
+          ),
         );
       },
-    );
-  }
-}
-
-class ErrorView extends StatelessWidget {
-  const ErrorView({
-    super.key,
-    required this.error, this.onRefresh,
-  });
-
-  final String error;
-  final void Function()? onRefresh;
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(error),
-          FilledButton.icon(
-            onPressed: onRefresh,
-            label: Text('Reload',textAlign: TextAlign.center,),
-            icon: Icon(Icons.refresh),
-          ),
-        ],
-      ),
     );
   }
 }

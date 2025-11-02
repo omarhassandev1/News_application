@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:news_app/common/error/failure_model.dart';
 import 'package:news_app/features/articles/model/news_response.dart';
 import 'package:news_app/features/articles/model/source_response.dart';
-import 'package:news_app/network/network_consts.dart';
+
+import '../../../common/network/network_consts.dart';
 
 class ApiService {
   static Dio dio = Dio(BaseOptions(baseUrl: NetworkConsts.baseUrl));
@@ -19,9 +21,10 @@ class ApiService {
         throw sourceResponse.message ?? 'something went wrong';
       }
     } on DioException catch (e) {
-      throw e.message.toString();
-    } catch (e) {}
-    return null;
+      throw FailureModel.getNetworkFailure(e);
+    } catch (e) {
+      throw BaseFailure(errorMessage: e.toString());
+    }
   }
 
   static Future<NewsResponse> getArticles(String sourceID) async {
@@ -38,9 +41,9 @@ class ApiService {
         throw 'something went wrong';
       }
     } on DioException catch (e) {
-      throw e.message??'something went wrong';
+      throw FailureModel.getNetworkFailure(e);
     } catch (e){
-      throw e.toString();
+      throw BaseFailure(errorMessage: e.toString());
     }
   }
 }
