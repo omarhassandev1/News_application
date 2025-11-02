@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:news_app/common/service_locator/ServiceLocator.dart';
 import 'package:news_app/features/articles/view/widgets/article_card.dart';
 import 'package:news_app/features/articles/model/news_response.dart';
 import 'package:news_app/features/articles/view_model/articles_provider.dart';
 import 'package:news_app/features/articles/model/source_response.dart';
-import 'package:news_app/features/articles/model/api_service.dart';
 import 'package:news_app/features/categories/view_model/category_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -17,12 +17,10 @@ class CategoryDetailsView extends StatelessWidget {
   Widget build(BuildContext context) {
     CategoryProvider provider = Provider.of<CategoryProvider>(context);
     CategoryEnum categoryEnum = provider.selectedCategory!;
-    ApiService.getSources(categoryEnum.name);
-
     return ChangeNotifierProvider(
       create:
           (BuildContext context) =>
-              ArticlesProvider()..getSources(categoryEnum.name),
+              ServiceLocator.articlesProvider ..getSources(categoryEnum.name),
       child: Consumer<ArticlesProvider>(
         builder: (context, viewModel, child) {
           if (viewModel.sourcesLoading) {
@@ -100,7 +98,7 @@ class _ArticlesListState extends State<ArticlesList> {
           return ErrorView(error: viewModel.articleError!,onRefresh: () => viewModel.getArticles(widget.sourceId)
           ,);
         }
-        NewsResponse newsResponse = viewModel.articles!;
+        ArticlesResponse newsResponse = viewModel.articles!;
         List<Articles> articles = newsResponse.articles ?? [];
 
         return RefreshIndicator(
