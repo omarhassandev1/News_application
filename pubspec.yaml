@@ -42,6 +42,8 @@ dependencies:
   cached_network_image: ^3.4.1
   timeago: ^3.7.1
   flutter_bloc: ^9.1.1
+  get_it: ^9.0.5
+  injectable: ^2.6.0
 
 dev_dependencies:
   flutter_test:
@@ -53,6 +55,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
+  injectable_generator:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

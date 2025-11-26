@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:news_app/common/service_locator/ServiceLocator.dart';
-import 'package:news_app/features/articles/view/widgets/article_card.dart';
-import 'package:news_app/features/articles/model/news_response.dart';
-import 'package:news_app/features/articles/model/source_response.dart';
-import 'package:news_app/features/articles/view_model/cubit/adrticles_cubit.dart';
-import 'package:news_app/features/articles/view_model/cubit/articles_state.dart';
+import 'package:news_app/common/service_locator/getit/di.dart';
+import 'package:news_app/features/articles/domain/entities/articles_entity.dart';
+import 'package:news_app/features/articles/domain/entities/source_entity.dart';
+import 'package:news_app/features/articles/presentation/view/widgets/article_card.dart';
 import 'package:news_app/features/categories/view_model/category_cubit.dart';
-import '../../../common/widgets/error_widget.dart';
+
+import '../../../../common/widgets/error_widget.dart';
+import '../view_model/cubit/adrticles_cubit.dart';
+import '../view_model/cubit/articles_state.dart';
 
 class CategoryDetailsView extends StatelessWidget {
   const CategoryDetailsView({super.key});
@@ -16,7 +17,7 @@ class CategoryDetailsView extends StatelessWidget {
   Widget build(BuildContext context) {
     CategoryCubit categoryCubit = BlocProvider.of<CategoryCubit>(context);
     return BlocProvider(
-      create: (context) => ServiceLocator.articlesCubit..getSources(categoryCubit.state!.name),
+      create: (context) => getIt<ArticlesCubit>()..getSources(categoryCubit.state!.name),
       child: BlocBuilder<ArticlesCubit, ArticlesState>(
         builder: (context, ArticlesState state) {
           if (state is GetSourcesLoading || state is ArticlesInitialState) {
@@ -30,21 +31,21 @@ class CategoryDetailsView extends StatelessWidget {
                   ),
             );
           }
-          late SourceResponse sources;
+          late List<SourceEntity> sources;
 
           if (state is GetSourcesSuccess) {
-            sources = state.sourceResponse;
+            sources = state.sources;
           } else if (state is GetArticlesLoading) {
-            sources = state.sourceResponse;
+            sources = state.sources;
           } else if (state is GetArticlesError) {
-            sources = state.sourceResponse;
+            sources = state.sources;
           } else if (state is GetArticlesSuccess) {
-            sources = state.sourceResponse;
+            sources = state.sources;
           }
           return Padding(
             padding: const EdgeInsets.all(16),
             child: DefaultTabController(
-              length: (sources.sources ?? []).length,
+              length: (sources).length,
               child: Column(
                 children: [
                   TabBar(
@@ -54,18 +55,18 @@ class CategoryDetailsView extends StatelessWidget {
                     tabAlignment: TabAlignment.start,
 
                     tabs:
-                        (sources.sources ?? [])
+                        (sources)
                             .map((source) => Tab(text: source.name))
                             .toList(),
                   ),
                   Expanded(
                     child: TabBarView(
                       children:
-                          (sources.sources ?? [])
+                          (sources)
                               .map(
                                 (e) => ArticlesList(
                                   sourceId: e.id ?? 'general',
-                                  sourceResponse: sources,
+                                  sources: sources,
                                 ),
                               )
                               .toList(),
@@ -85,10 +86,10 @@ class ArticlesList extends StatefulWidget {
   const ArticlesList({
     super.key,
     required this.sourceId,
-    required this.sourceResponse,
+    required this.sources,
   });
   final String sourceId;
-  final SourceResponse sourceResponse;
+  final List<SourceEntity> sources;
 
   @override
   State<ArticlesList> createState() => _ArticlesListState();
@@ -101,7 +102,7 @@ class _ArticlesListState extends State<ArticlesList> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       context.read<ArticlesCubit>().getArticles(
         widget.sourceId,
-        widget.sourceResponse,
+        widget.sources,
       );
     });
   }
@@ -118,19 +119,17 @@ class _ArticlesListState extends State<ArticlesList> {
             onRefresh:
                 () => context.read<ArticlesCubit>().getArticles(
                   widget.sourceId,
-                  widget.sourceResponse,
+                  widget.sources,
                 ),
           );
         }
-        ArticlesResponse newsResponse =
-            (state as GetArticlesSuccess).articlesResponse;
-        List<Articles> articles = newsResponse.articles ?? [];
-
+        List<ArticleEntity> articles =
+            (state as GetArticlesSuccess).articles;
         return RefreshIndicator(
           onRefresh: () async {
             context.read<ArticlesCubit>().getArticles(
               widget.sourceId,
-              widget.sourceResponse,
+              widget.sources,
             );
           },
           child: ListView.builder(

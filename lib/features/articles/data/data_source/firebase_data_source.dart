@@ -1,4 +1,4 @@
-import 'package:news_app/features/articles/model/articles_data_source.dart';
+import 'package:news_app/features/articles/data/data_source/articles_data_source.dart';
 
 class FirebaseDataSource extends ArticlesDataSource{
   @override

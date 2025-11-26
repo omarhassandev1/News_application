@@ -1,15 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:news_app/features/articles/domain/entities/articles_entity.dart';
 
 import 'package:timeago/timeago.dart' as timeago;
-import '../../../../common/app_colors.dart';
-import '../../model/news_response.dart';
+import '../../../../../common/app_colors.dart';
 import 'article_overlay_widget.dart';
 
 class ArticleCardWidget extends StatelessWidget {
   const ArticleCardWidget({super.key, required this.article});
 
-  final Articles article;
+  final ArticleEntity article;
 
   @override
   Widget build(BuildContext context) {

@@ -1,13 +1,18 @@
 import 'package:dio/dio.dart';
+import 'package:injectable/injectable.dart';
 import 'package:news_app/common/error/failure_model.dart';
-import 'package:news_app/features/articles/model/articles_data_source.dart';
-import 'package:news_app/features/articles/model/news_response.dart';
-import 'package:news_app/features/articles/model/source_response.dart';
+import 'package:news_app/features/articles/data/data_source/articles_data_source.dart';
+import 'package:news_app/features/articles/data/models/news_response.dart';
+import 'package:news_app/features/articles/data/models/source_response.dart';
 
-import '../../../common/network/network_consts.dart';
+import '../../../../common/network/network_consts.dart';
 
+@LazySingleton(as: ArticlesDataSource)
 class ApiDataSource extends ArticlesDataSource{
-  static Dio dio = Dio(BaseOptions(baseUrl: NetworkConsts.baseUrl));
+  // static Dio dio = Dio(BaseOptions(baseUrl: NetworkConsts.baseUrl));
+  final Dio dio;
+
+  ApiDataSource({required this.dio});
 
   @override
   Future<SourceResponse> getSources(String category) async {
@@ -38,7 +43,6 @@ class ApiDataSource extends ArticlesDataSource{
       );
       ArticlesResponse news = ArticlesResponse.fromJson(response.data);
       if(news.status=='ok' && response.statusCode==200) {
-        print(news);
         return news;
       }else{
         throw 'something went wrong';

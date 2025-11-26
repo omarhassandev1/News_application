@@ -1,14 +1,12 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-
-import '../../../../common/app_colors.dart';
-import '../../model/news_response.dart';
-
+import 'package:news_app/features/articles/domain/entities/articles_entity.dart';
+import '../../../../../common/app_colors.dart';
 
 class ArticleOverlayWidget extends StatelessWidget {
   const ArticleOverlayWidget({super.key, required this.article});
-  final Articles article;
+  final ArticleEntity article;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
