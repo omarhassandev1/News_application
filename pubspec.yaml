@@ -38,9 +38,17 @@ dependencies:
   cupertino_icons: ^1.0.8
   dio: ^5.9.0
   flutter_svg: ^2.2.1
-  provider: ^6.1.5+1
+  # provider: ^6.1.5+1
   cached_network_image: ^3.4.1
   timeago: ^3.7.1
+  flutter_bloc: ^9.1.1
+  get_it: ^9.0.5
+  injectable: ^2.6.0
+  flutter_localizations:
+    sdk: flutter
+  intl: any
+  url_launcher: ^6.3.2
+  shared_preferences: ^2.5.3
 
 dev_dependencies:
   flutter_test:
@@ -52,13 +60,14 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
+  injectable_generator:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
 flutter:
-
+  generate: true
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
