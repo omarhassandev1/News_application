@@ -4,6 +4,7 @@ import 'package:news_app/features/categories/model/enums/category_enum.dart';
 import 'package:news_app/features/categories/view/category_list_view.dart';
 import 'package:news_app/features/categories/view_model/category_cubit.dart';
 
+import '../generated/app_localizations.dart';
 import 'articles/presentation/view/category_details_view.dart';
 import 'categories/view/home_drawer.dart';
 
@@ -21,7 +22,7 @@ class MainLayer extends StatelessWidget {
             (context, CategoryEnum? state) => Scaffold(
               drawer: HomeDrawer(),
               appBar: AppBar(
-                title: Text(state != null ? state.name : 'Home'),
+                title: Text(state != null ? state.name : AppLocalizations.of(context)!.home,style: Theme.of(context).textTheme.bodyMedium,),
                 actions: [
                   IconButton(onPressed: () {}, icon: Icon(Icons.search)),
                 ],

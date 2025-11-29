@@ -4,6 +4,7 @@ import 'package:news_app/features/articles/domain/entities/articles_entity.dart'
 
 import 'package:timeago/timeago.dart' as timeago;
 import '../../../../../common/app_colors.dart';
+import '../../../../../../generated/app_localizations.dart';
 import 'article_overlay_widget.dart';
 
 class ArticleCardWidget extends StatelessWidget {
@@ -28,11 +29,10 @@ class ArticleCardWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           border: Border.all(color: Theme.of(context).primaryColor),
         ),
-        padding: EdgeInsets.all(8),
-        margin: EdgeInsets.symmetric(vertical: 10),
+        padding: const EdgeInsets.all(8),
+        margin: const EdgeInsets.symmetric(vertical: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          spacing: 10,
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
@@ -41,14 +41,13 @@ class ArticleCardWidget extends StatelessWidget {
                 height: 200,
                 width: double.infinity,
                 fit: BoxFit.cover,
-                placeholder:
-                    (context, url) => Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: CircularProgressIndicator(),
-                      ),
-                    ),
-                errorWidget: (context, url, error) => Icon(Icons.broken_image),
+                placeholder: (context, url) => const Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+                errorWidget: (context, url, error) => const Icon(Icons.broken_image),
               ),
             ),
             Text(
@@ -56,17 +55,16 @@ class ArticleCardWidget extends StatelessWidget {
               style: Theme.of(context).textTheme.bodySmall,
             ),
             Row(
-              spacing: 20,
               children: [
                 Expanded(
                   child: Text(
                     textAlign: TextAlign.justify,
                     (article.description ?? '').length > 100
-                        ? '${article.description!.substring(0, 100)} ...show more'
+                        ? '${article.description!.substring(0, 100)} ${AppLocalizations.of(context)!.showMore}'
                         : (article.description ?? ''),
                     style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                      color: AppColors.grayColor,
-                    ),
+                          color: AppColors.grayColor,
+                        ),
                   ),
                 ),
                 Text(

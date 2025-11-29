@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../generated/app_localizations.dart';
 import '../model/enums/category_enum.dart';
 import 'widgets/category_card.dart';
 
@@ -12,16 +13,21 @@ class CategoryListView extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0),
         child: Column(
-          spacing: 16,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('''Good Morning
-Here is Some News For You''', style: Theme.of(context).textTheme.headlineSmall),
+            Text(
+              AppLocalizations.of(context)!.goodMorning,
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+            const SizedBox(height: 16),
             ...List.generate(
               CategoryEnum.values.length,
-                  (index) => CategoryCard(
-                categoryEnum: CategoryEnum.values[index],
-                isRight: index % 2 != 0,
+              (index) => Padding(
+                padding: const EdgeInsets.only(bottom: 16.0),
+                child: CategoryCard(
+                  categoryEnum: CategoryEnum.values[index],
+                  isRight: index % 2 != 0,
+                ),
               ),
             ),
           ],

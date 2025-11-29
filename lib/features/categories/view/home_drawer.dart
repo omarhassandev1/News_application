@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_app/common/app_colors.dart';
+import 'package:news_app/common/settings_cubit/settings_cubit.dart';
 import 'package:news_app/features/categories/view/widgets/custom_drop_down_menu.dart';
 import 'package:news_app/features/categories/view_model/category_cubit.dart';
 
 import '../../../gen/assets.gen.dart';
+import '../../../generated/app_localizations.dart';
 
 class HomeDrawer extends StatelessWidget {
   const HomeDrawer({super.key});
@@ -15,13 +17,14 @@ class HomeDrawer extends StatelessWidget {
       child: Container(
         color: AppColors.blackColor,
         child: Column(
+          spacing: 10,
           children: [
             Container(
               height: 200,
               color: AppColors.whiteColor,
               alignment: Alignment.center,
               child: Text(
-                'News App',
+                AppLocalizations.of(context)!.newsApp,
                 style: TextStyle(
                   color: AppColors.blackColor,
                   fontSize: 24,
@@ -32,7 +35,7 @@ class HomeDrawer extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
-                spacing: 24,
+                spacing: 10,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   GestureDetector(
@@ -41,14 +44,14 @@ class HomeDrawer extends StatelessWidget {
                       context.read<CategoryCubit>().emptyCategory();
                     },
                     child: Row(
-                      spacing: 8,
+                      spacing: 10,
                       children: [
                         Assets.mainLayer.drawerIcons.home.svg(
                           height: 24,
                           width: 24,
                         ),
                         Text(
-                          'Go to home',
+                          AppLocalizations.of(context)!.goToHome,
                           style: Theme.of(context).textTheme.bodyMedium!
                               .copyWith(color: AppColors.whiteColor),
                         ),
@@ -57,57 +60,14 @@ class HomeDrawer extends StatelessWidget {
                   ),
                   Divider(color: AppColors.whiteColor),
                   Row(
-                    spacing: 8,
+                    spacing: 10,
                     children: [
                       Assets.mainLayer.drawerIcons.brush.svg(
                         height: 24,
                         width: 24,
                       ),
                       Text(
-                        'Theme',
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          color: AppColors.whiteColor,
-                        ),
-                      ),
-                    ],
-                  ),
-                  CustomDropDownMenu(
-                    items: [
-                      DropdownMenuItem(
-                        value: 'ar',
-                        child: Text(
-                          'Arabic',
-                          style: TextStyle(
-                            color: AppColors.blackColor,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      DropdownMenuItem(
-                        value: 'en',
-                        child: Text(
-                          'Wnglish',
-                          style: TextStyle(
-                            color: AppColors.blackColor,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
-                    onChanged: (value) {},
-                  ),
-                  Divider(color: AppColors.whiteColor),
-                  Row(
-                    spacing: 8,
-                    children: [
-                      Assets.mainLayer.drawerIcons.globe.svg(
-                        height: 24,
-                        width: 24,
-                      ),
-                      Text(
-                        'Language',
+                        AppLocalizations.of(context)!.theme,
                         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                           color: AppColors.whiteColor,
                         ),
@@ -119,7 +79,7 @@ class HomeDrawer extends StatelessWidget {
                       DropdownMenuItem(
                         value: ThemeMode.dark,
                         child: Text(
-                          'Dark',
+                          AppLocalizations.of(context)!.dark,
                           style: TextStyle(
                             color: AppColors.blackColor,
                             fontSize: 18,
@@ -130,7 +90,7 @@ class HomeDrawer extends StatelessWidget {
                       DropdownMenuItem(
                         value: ThemeMode.light,
                         child: Text(
-                          'Light',
+                          AppLocalizations.of(context)!.light,
                           style: TextStyle(
                             color: AppColors.blackColor,
                             fontSize: 18,
@@ -139,7 +99,58 @@ class HomeDrawer extends StatelessWidget {
                         ),
                       ),
                     ],
-                    onChanged: (value) {},
+                    onChanged: (value) {
+                      if (value != null) {
+                        context.read<SettingsCubit>().changeTheme(value);
+                      }
+                    },
+                  ),
+                  Divider(color: AppColors.whiteColor),
+                  Row(
+                    spacing: 10,
+                    children: [
+                      Assets.mainLayer.drawerIcons.globe.svg(
+                        height: 24,
+                        width: 24,
+                      ),
+                      Text(
+                        AppLocalizations.of(context)!.language,
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          color: AppColors.whiteColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                  CustomDropDownMenu<String>(
+                    items: [
+                      DropdownMenuItem(
+                        value: 'ar',
+                        child: Text(
+                          AppLocalizations.of(context)!.arabic,
+                          style: TextStyle(
+                            color: AppColors.blackColor,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: 'en',
+                        child: Text(
+                          AppLocalizations.of(context)!.english,
+                          style: TextStyle(
+                            color: AppColors.blackColor,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                    onChanged: (value) {
+                      if (value != null) {
+                        context.read<SettingsCubit>().changeLocale(value);
+                      }
+                    },
                   ),
                 ],
               ),

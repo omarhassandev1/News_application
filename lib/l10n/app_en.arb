@@ -1,0 +1,23 @@
+{
+  "showMore": "...show more",
+  "somethingWentWrong": "something went wrong",
+  "viewFullArticle": "View full article",
+  "newsApp": "News App",
+  "goToHome": "Go to home",
+  "theme": "Theme",
+  "arabic": "Arabic",
+  "english": "English",
+  "language": "Language",
+  "dark": "Dark",
+  "light": "Light",
+  "goodMorning": "Good Morning\nHere is Some News For You",
+  "general": "General",
+  "business": "Business",
+  "entertainment": "Entertainment",
+  "health": "Health",
+  "science": "Science",
+  "technology": "Technology",
+  "sports": "Sports",
+  "viewAll": "View all",
+  "home": "Home"
+}

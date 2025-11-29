@@ -36,3 +36,17 @@ class GetArticlesError extends ArticlesState {
   final String error;
   GetArticlesError({required this.sources, required this.error});
 }
+
+
+class SearchArticlesLoading extends ArticlesState {}
+
+class SearchArticlesSuccess extends ArticlesState {
+  final List<ArticleEntity> results;
+  SearchArticlesSuccess({required this.results});
+}
+
+class SearchArticlesError extends ArticlesState {
+  final String error;
+  SearchArticlesError({required this.error});
+}
+

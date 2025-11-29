@@ -1,22 +1,38 @@
 
+import 'package:flutter/material.dart';
 import '../../../../gen/assets.gen.dart';
+import '../../../../generated/app_localizations.dart';
 
-enum CategoryEnum{
-  general(name: 'General',),
-  business(name: 'Business'),
-  entertainment(name: 'Entertainment'),
-  health(name: 'Health'),
-  science(name: 'Science'),
-  technology(name: 'Technology'),
-  sports(name: 'Sports');
+enum CategoryEnum {
+  general,
+  business,
+  entertainment,
+  health,
+  science,
+  technology,
+  sports;
 
-  final String name;
+  String getName(BuildContext context) {
+    switch (this) {
+      case CategoryEnum.general:
+        return AppLocalizations.of(context)!.general;
+      case CategoryEnum.business:
+        return AppLocalizations.of(context)!.business;
+      case CategoryEnum.entertainment:
+        return AppLocalizations.of(context)!.entertainment;
+      case CategoryEnum.health:
+        return AppLocalizations.of(context)!.health;
+      case CategoryEnum.science:
+        return AppLocalizations.of(context)!.science;
+      case CategoryEnum.technology:
+        return AppLocalizations.of(context)!.technology;
+      case CategoryEnum.sports:
+        return AppLocalizations.of(context)!.sports;
+    }
+  }
 
-
-  const CategoryEnum({required this.name});
-
-  String get imagePath{
-    switch (this){
+  String get imagePath {
+    switch (this) {
       case general:
         return Assets.mainLayer.categoriesCard.general.path;
       case business:
@@ -31,6 +47,6 @@ enum CategoryEnum{
         return Assets.mainLayer.categoriesCard.sports.path;
       case technology:
         return Assets.mainLayer.categoriesCard.technology.path;
-      }
+    }
   }
 }

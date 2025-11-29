@@ -6,4 +6,6 @@ import 'package:news_app/features/articles/domain/entities/source_entity.dart';
 abstract class ArticlesRepository{
   Future<Response<List<ArticleEntity>>> getArticles(String sourceId);
   Future<Response<List<SourceEntity>>> getSources(String categoryId);
+  Future<Response<List<ArticleEntity>>> searchArticles(String query);
+
 }

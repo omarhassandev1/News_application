@@ -46,4 +46,23 @@ class ArticlesRepositoryImpl implements ArticlesRepository {
       return Failure(error: e);
     }
   }
+
+  @override
+  Future<Response<List<ArticleEntity>>> searchArticles(String query) async {
+    try {
+      final ArticlesResponse response =
+      await _articlesDataSource.searchArticles(query);
+      final List<Articles> results = response.articles??[];
+      final List<ArticleEntity> entities =
+      results.map((e) => e.getEntity()).toList();
+      return Success(data: entities);
+    } on FailureModel catch (e) {
+      return Failure(error: e);
+    } catch (e) {
+      return Failure(error: BaseFailure(errorMessage: e.toString()));
+    }
+  }
+
+
+
 }

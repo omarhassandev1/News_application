@@ -5,6 +5,7 @@ import 'package:news_app/features/articles/domain/entities/articles_entity.dart'
 import 'package:news_app/features/articles/domain/entities/source_entity.dart';
 import 'package:news_app/features/articles/domain/use_case/get_articles_usecase.dart';
 import 'package:news_app/features/articles/domain/use_case/get_sources_usecase.dart';
+import 'package:news_app/features/articles/domain/use_case/search_articles_usecase.dart';
 
 import 'articles_state.dart';
 
@@ -12,8 +13,9 @@ import 'articles_state.dart';
 class ArticlesCubit extends Cubit<ArticlesState> {
   final GetSourcesUseCase _getSourcesUseCase;
   final GetArticlesUsecase _getArticlesUsecase;
+  final SearchArticlesUseCase _searchArticlesUseCase;
 
-  ArticlesCubit({
+  ArticlesCubit(this._searchArticlesUseCase, {
     required GetSourcesUseCase getSourcesUseCase,
     required GetArticlesUsecase getArticlesUsecase,
   }) : _getSourcesUseCase = getSourcesUseCase,
@@ -47,4 +49,21 @@ class ArticlesCubit extends Cubit<ArticlesState> {
         emit(GetArticlesError(sources: sources, error: response.error.toString()));
     }
   }
+
+  Future<void> search(String query) async {
+    if (query.trim().isEmpty) return;
+
+    emit(SearchArticlesLoading());
+
+    Response<List<ArticleEntity>> response = await _searchArticlesUseCase.call(query);
+
+    switch (response) {
+      case Success<List<ArticleEntity>>():
+        emit(SearchArticlesSuccess(results: response.data));
+      case Failure():
+        emit(SearchArticlesError(error: response.error.toString()));
+    }
+  }
+
+
 }

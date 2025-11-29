@@ -8,8 +8,7 @@ import 'package:news_app/features/articles/data/models/source_response.dart';
 import '../../../../common/network/network_consts.dart';
 
 @LazySingleton(as: ArticlesDataSource)
-class ApiDataSource extends ArticlesDataSource{
-  // static Dio dio = Dio(BaseOptions(baseUrl: NetworkConsts.baseUrl));
+class ApiDataSource extends ArticlesDataSource {
   final Dio dio;
 
   ApiDataSource({required this.dio});
@@ -22,7 +21,7 @@ class ApiDataSource extends ArticlesDataSource{
         queryParameters: {'apiKey': NetworkConsts.apiKey, 'category': category},
       );
       SourceResponse sourceResponse = SourceResponse.fromJson(response.data);
-      if (sourceResponse.status == 'ok' && response.statusCode==200) {
+      if (sourceResponse.status == 'ok' && response.statusCode == 200) {
         return sourceResponse;
       } else {
         throw sourceResponse.message ?? 'something went wrong';
@@ -35,21 +34,42 @@ class ApiDataSource extends ArticlesDataSource{
   }
 
   @override
-  Future<ArticlesResponse> getArticles(String sourceID) async {
+    Future<ArticlesResponse> getArticles(String sourceID) async {
     try {
       Response response = await dio.get(
         NetworkConsts.newsEndPoints,
         queryParameters: {'apiKey': NetworkConsts.apiKey, 'sources': sourceID},
       );
       ArticlesResponse news = ArticlesResponse.fromJson(response.data);
-      if(news.status=='ok' && response.statusCode==200) {
+      if (news.status == 'ok' && response.statusCode == 200) {
         return news;
-      }else{
+      } else {
         throw 'something went wrong';
       }
     } on DioException catch (e) {
       throw FailureModel.getNetworkFailure(e);
-    } catch (e){
+    } catch (e) {
+      throw BaseFailure(errorMessage: e.toString());
+    }
+  }
+
+  @override
+  Future<ArticlesResponse> searchArticles(String query) async {
+    try {
+      Response response = await dio.get(
+        NetworkConsts.newsEndPoints,
+        queryParameters: {"q": query, "apiKey": NetworkConsts.apiKey},
+      );
+
+      ArticlesResponse news = ArticlesResponse.fromJson(response.data);
+      if (news.status == 'ok' && response.statusCode == 200) {
+        return news;
+      } else {
+        throw 'something went wrong';
+      }
+    } on DioException catch (e) {
+      throw FailureModel.getNetworkFailure(e);
+    } catch (e) {
       throw BaseFailure(errorMessage: e.toString());
     }
   }

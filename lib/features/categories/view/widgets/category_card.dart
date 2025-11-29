@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_app/common/app_colors.dart';
 import 'package:news_app/features/categories/view_model/category_cubit.dart';
+import 'package:news_app/generated/app_localizations.dart';
+import '../../../../common/settings_cubit/settings_cubit.dart';
 import '../../model/enums/category_enum.dart';
 
 class CategoryCard extends StatelessWidget {
@@ -17,8 +19,7 @@ class CategoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap:
-          () => context.read<CategoryCubit>().selectCategory(categoryEnum),
+      onTap: () => context.read<CategoryCubit>().selectCategory(categoryEnum),
       child: Container(
         height: 200,
         width: double.infinity,
@@ -38,7 +39,7 @@ class CategoryCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Text(
-              categoryEnum.name,
+              categoryEnum.getName(context),
               style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                 color: Theme.of(context).scaffoldBackgroundColor,
               ),
@@ -49,14 +50,18 @@ class CategoryCard extends StatelessWidget {
                     color: AppColors.grayColor,
                     borderRadius: BorderRadius.circular(100),
                   ),
-                  padding: EdgeInsets.only(left: 16),
+                  padding:
+                      context.read<SettingsCubit>().state.locale.toString() ==
+                              'ar'
+                          ? EdgeInsets.only(right: 16)
+                          : EdgeInsets.only(left: 16),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     spacing: 10,
                     children: [
                       Text(
-                        'View all',
+                        AppLocalizations.of(context)!.viewAll,
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
                       Container(
@@ -78,9 +83,13 @@ class CategoryCard extends StatelessWidget {
                     color: AppColors.grayColor,
                     borderRadius: BorderRadius.circular(100),
                   ),
-                  padding: EdgeInsets.only(right: 16),
+                  padding:
+                      context.read<SettingsCubit>().state.locale.toString() ==
+                              'ar'
+                          ? EdgeInsets.only(left: 16)
+                          : EdgeInsets.only(right: 16),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     mainAxisSize: MainAxisSize.min,
                     spacing: 10,
                     children: [
@@ -96,7 +105,7 @@ class CategoryCard extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        'View all',
+                        AppLocalizations.of(context)!.viewAll,
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
                     ],

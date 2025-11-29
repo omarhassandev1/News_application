@@ -10,5 +10,10 @@ class FirebaseDataSource extends ArticlesDataSource{
   getSources(String sourceId) {
     throw UnimplementedError();
   }
+
+  @override
+  searchArticles(String query) {
+    throw UnimplementedError();
+  }
   
 }

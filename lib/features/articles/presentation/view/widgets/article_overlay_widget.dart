@@ -1,12 +1,13 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app/features/articles/domain/entities/articles_entity.dart';
-import '../../../../../common/app_colors.dart';
+import '../../../../../generated/app_localizations.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ArticleOverlayWidget extends StatelessWidget {
   const ArticleOverlayWidget({super.key, required this.article});
   final ArticleEntity article;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -20,7 +21,7 @@ class ArticleOverlayWidget extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
-              spacing: 8,
+              spacing: 10,
               mainAxisSize: MainAxisSize.min,
               children: [
                 ClipRRect(
@@ -31,22 +32,22 @@ class ArticleOverlayWidget extends StatelessWidget {
                     width: double.infinity,
                     fit: BoxFit.cover,
                     placeholder:
-                        (context, url) => Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: CircularProgressIndicator(),
-                      ),
-                    ),
+                        (context, url) => const Center(
+                          child: Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
                     errorWidget:
-                        (context, url, error) => Icon(Icons.broken_image),
+                        (context, url, error) => const Icon(Icons.broken_image),
                   ),
                 ),
-
                 Flexible(
                   child: Text(
-                    article.content ?? 'something went wrong',
+                    article.content ??
+                        AppLocalizations.of(context)!.somethingWentWrong,
                     style: TextStyle(
-                      color: AppColors.whiteColor,
+                      color: Theme.of(context).scaffoldBackgroundColor,
                       fontWeight: FontWeight.w500,
                       fontSize: 14,
                     ),
@@ -55,17 +56,41 @@ class ArticleOverlayWidget extends StatelessWidget {
                 SizedBox(
                   width: double.infinity,
                   child: FilledButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      final urlString = article.url;
+
+                      if (urlString == null || urlString.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text("Invalid article URL")),
+                        );
+                        return;
+                      }
+
+                      final url = Uri.parse(urlString);
+
+                      // IMPORTANT: Use this
+                      if (!await launchUrl(
+                        url,
+                        mode: LaunchMode.externalApplication,
+                      )) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text("Could not open article"),
+                          ),
+                        );
+                      }
+                    },
+
                     style: FilledButton.styleFrom(
                       backgroundColor:
-                      Theme.of(context).scaffoldBackgroundColor,
-                      padding: EdgeInsets.all(16),
+                          Theme.of(context).scaffoldBackgroundColor,
+                      padding: const EdgeInsets.all(16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
                     child: Text(
-                      'View full article',
+                      AppLocalizations.of(context)!.viewFullArticle,
                       style: TextStyle(
                         color: Theme.of(context).primaryColor,
                         fontSize: 16,
